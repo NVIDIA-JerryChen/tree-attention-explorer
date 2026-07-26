@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="交互探索 BFS level-order 下的 Tree Attention mask、祖先路径、孔洞与连续 KV interval 数。">
+  <title>BFS Level-order · Tree Attention Mask Explorer</title>
+  <link rel="icon" href="./favicon.svg">
+  <link rel="stylesheet" href="./assets/explorer.css">
+  <script defer src="./assets/explorer.js"></script>
+</head>
+<body>
+  <div class="app-shell" id="tree-attention-explorer" data-order="level">
+    <header class="topbar">
+      <div class="brand">
+        <p class="brand-kicker">Tree Attention Explorer</p>
+        <h1>前缀树排列与 Mask Shape</h1>
+      </div>
+      <nav class="layout-nav" aria-label="物理排列">
+        <a href="./">DFS preorder</a>
+        <a href="./level-order.html" aria-current="page">BFS level-order</a>
+      </nav>
+    </header>
+
+    <section class="control-surface" aria-label="交互控制">
+      <div class="layout-definition">
+        <strong>按层排列：同一深度的节点连续</strong>
+        <code>R A1 A2 B1 B2 B3 B4 C1 …</code>
+      </div>
+      <div class="field">
+        <label for="tree-height">树规模</label>
+        <select id="tree-height">
+          <option value="2">7 节点 · 高度 2</option>
+          <option value="3">15 节点 · 高度 3</option>
+          <option value="4">31 节点 · 高度 4</option>
+          <option value="5" selected>63 节点 · 高度 5</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="query-node">Query block</label>
+        <select id="query-node"></select>
+      </div>
+      <div class="summary" aria-live="polite">
+        <span class="metric" id="query-metric"></span>
+        <span class="metric" id="max-metric"></span>
+        <span class="path" id="path-label"></span>
+      </div>
+    </section>
+
+    <main class="workspace">
+      <section class="panel tree-panel" aria-label="树结构">
+        <div class="panel-head">
+          <h2>祖先路径</h2>
+          <span>蓝色路径为选中 Query 可见的 KV</span>
+        </div>
+        <div class="tree-stage">
+          <svg class="tree-svg" id="tree-svg" role="img"></svg>
+        </div>
+      </section>
+
+      <section class="panel mask-panel" aria-label="Tree Attention mask">
+        <div class="panel-head">
+          <h2>Mask shape</h2>
+          <span id="panel-order"></span>
+        </div>
+        <div class="mask-stage">
+          <svg class="mask-svg" id="mask-svg" role="img"></svg>
+        </div>
+        <div class="mask-footer">
+          <p class="strip-label">选中 Query 行（放大）</p>
+          <svg class="row-strip" id="row-strip" role="img"></svg>
+          <div class="legend" aria-label="图例">
+            <span><i class="swatch swatch-visible"></i>可见 KV</span>
+            <span><i class="swatch swatch-hole"></i>选中行中的孔洞</span>
+            <span><i class="swatch swatch-hidden"></i>不可见</span>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</body>
+</html>
+
